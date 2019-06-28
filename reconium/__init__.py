@@ -10,11 +10,12 @@ from subprocess import call
 
 class Recorder:
 
-    def __init__(self,driver,fps):
+    def __init__(self,driver,fps,path=""):
         self.driver = driver
         self.fps = fps
         self.status = False
         self.tempdir = tempfile.gettempdir()
+        self.path = path
         
     def __record(self):
         frame = 0
@@ -42,11 +43,13 @@ class Recorder:
 
     def stop(self):
         self.status = False
-        name = str(datetime.now())
-        fps = int(self.fps/3)
+        name = self.path+str(datetime.now())
+        fps = int(self.fps/4)
         try:
             call(["ffmpeg","-framerate",str(fps),"-i",self.tempdir+"/reconium/%00d.png",name+".avi"])
         except Exception as e:
             print(e)
         finally:
             shutil.rmtree(self.tempdir+"/reconium/")
+
+
