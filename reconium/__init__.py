@@ -28,8 +28,13 @@ class Recorder:
 
 
     def start(self):
+
         if not os.path.exists(self.tempdir+"/reconium/"):
             os.makedirs(self.tempdir+"/reconium/")
+        else:
+            shutil.rmtree(self.tempdir+"/reconium/")
+            os.makedirs(self.tempdir+"/reconium/")
+
         self.status = True
         self.rec = threading.Thread(target=self.__record)
         self.rec.start()
@@ -38,10 +43,10 @@ class Recorder:
     def stop(self):
         self.status = False
         name = str(datetime.now())
+        fps = int(self.fps/3)
         try:
-            call(["ffmpeg","-framerate",str(self.fps),"-i",self.tempdir+"/reconium/%00d.png",name+".avi"])
+            call(["ffmpeg","-framerate",str(fps),"-i",self.tempdir+"/reconium/%00d.png",name+".avi"])
         except Exception as e:
             print(e)
         finally:
             shutil.rmtree(self.tempdir+"/reconium/")
-
