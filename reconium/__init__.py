@@ -25,7 +25,7 @@ class Recorder:
                 frame = frame+1
                 time.sleep(1/self.fps)
             except Exception as e:
-                print(e)
+                pass
 
 
     def start(self):
