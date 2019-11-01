@@ -5,6 +5,7 @@ import tempfile
 import threading
 from datetime import datetime
 from subprocess import call
+import platform
 
 # "Cansu"
 
@@ -43,7 +44,14 @@ class Recorder:
 
     def stop(self):
         self.status = False
-        name = self.path+str(datetime.now())
+
+        if platform.system() == 'Linux':
+            name = self.path+str(datetime.now())
+        elif platform.system() == 'Windows':
+            name = self.path+str(datetime.now().strftime("%Y-%m-%d %H_%M_%S"))
+        else:
+            name = self.path+str(datetime.now())
+
         fps = int(self.fps/4)
         try:
             call(["ffmpeg","-framerate",str(fps),"-i",self.tempdir+"/reconium/%00d.png",name+".avi"])
@@ -51,5 +59,3 @@ class Recorder:
             print(e)
         finally:
             shutil.rmtree(self.tempdir+"/reconium/")
-
-

@@ -13,3 +13,6 @@ Record Video for Selenium Test
         rc.start()
         # record here selenium test
         rc.stop()
+        
+## Example for both Linux and Windows
+        visit https://github.com/ShaonMajumder/reconium-example
